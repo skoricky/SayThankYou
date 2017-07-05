@@ -8,16 +8,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Configuration;
-using NLog;
 using VoteWeb;
 
 public partial class Vote : System.Web.UI.Page
 {
-    /// <summary>
-    /// VoteWeb logger
-    /// </summary>    
-    Logger logger = LogManager.GetCurrentClassLogger();
-
+   
     IVoteDataStrategy voteDataStrategy = CreateVoteDataStrategy();
 
     static private IVoteDataStrategy CreateVoteDataStrategy()
@@ -28,7 +23,7 @@ public partial class Vote : System.Web.UI.Page
         else if (voteDataStrategyName == "Sharepoint")
             return new VoteDataSharepoint();
         else
-            throw new Exception("Vote Data Stratefy is not defined.");
+            throw new Exception("Vote Data Strategy is not defined.");
     }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -91,7 +86,7 @@ public partial class Vote : System.Web.UI.Page
     private Employee GetCurrentUser()
     {
         Employee employee = new Employee(); 
-        employee.Account = "BA000"; // ToDo: Добавить стратегию
+        employee.Account = ProgramClasses.GetCurrentAccount(); // ToDo: Добавить стратегию
         employee.EmployeeName = voteDataStrategy.GetEmployeeName(employee.Account);
         employee.Department = voteDataStrategy.GetDepartment(employee.Account);
         employee.ImageUrl = voteDataStrategy.GetImageUrl(employee.Account);
@@ -109,8 +104,8 @@ public partial class Vote : System.Web.UI.Page
         EmployeeVote vote = new EmployeeVote();
         
         vote.Date = DateTime.Now;
-        vote.AccountFrom = "BA000"; // ToDo: Добавить стратегию
-        vote.AccountTo = "BA001"; // ToDo: Добавить стратегию
+        vote.AccountFrom = ProgramClasses.GetCurrentAccount(); // ToDo: Добавить стратегию
+        vote.AccountTo = GetVotedAccount(); // ToDo: Добавить стратегию
         switch (RadioButtonListValues.SelectedValue)
         {
             case "TeamSpirit":

@@ -4,10 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>VoteWeb</title>
     <script src="/js/Vote.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/Vote.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/Vote.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
 </head>    
 <body>
      <form id="form1" runat="server">
@@ -48,19 +49,19 @@
                         <asp:Label ID="LabelLastChose" runat="server"></asp:Label>
                 </div>
                 <div id="dVoteOne" onclick="clickOne()">
-                    <p id="VoteOneText">① КОМАНДНЫЙ ДУХ</p>
+                    <div id="VoteOneText">① КОМАНДНЫЙ ДУХ</div>
                     <%--<asp:Label ID="LabelVoteOne" text="① КОМАНДНЫЙ ДУХ" runat="server"></asp:Label>--%>
                 </div>
                 <div id="dVoteTwo" onclick="clickTwo()">
-                    <p id="VoteTwoText">② ИННОВАЦИИ</p>
+                    <div id="VoteTwoText">② ИННОВАЦИИ</div>
                     <%--<asp:Label ID="LabelVoteTwo" text="② ИННОВАЦИИ" runat="server"></asp:Label>--%>
                 </div>
                 <div id="dVoteThree" onclick="clickThree()">
-                    <p id="VoteThreeText">③ ВОВЛЕЧЕННОСТЬ</p>
+                    <div id="VoteThreeText">③ ВОВЛЕЧЕННОСТЬ</div>
                     <%--<asp:Label ID="LabelVoteThree" text="③ ВОВЛЕЧЕННОСТЬ" runat="server"></asp:Label>--%>
                 </div>
                 <div id="dVoteFour" onclick="clickFour()">
-                    <p id="VoteFourText">④ ОТВЕТСТВЕННОСТЬ</p>
+                    <div id="VoteFourText">④ ОТВЕТСТВЕННОСТЬ</div>
                     <%--<asp:Label ID="LabelVoteFour" text="④ ОТВЕТСТВЕННОСТЬ" runat="server"></asp:Label>--%>
                 </div>
                 <asp:Label ID="LabelVoteDescription" runat="server" Text="Выберите качество!"></asp:Label>

@@ -1,6 +1,6 @@
 ﻿/* --------------- reset.css --------------- */
 /*@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=cyrillic');*/
-#Panel1, #ResponsibilityCongratsNamePlaseOne, #RadioButtonListValues, #LabelFromEmployeeName, #ButtonIContributor, #ButtonIManager, #LabelFromEmployeeDep, #ButtonOK, #TextBoxComment, #ButtonModal, #ButtonNEXT, #ButtonRUS, #ButtonENG, #ButtonStats, html, body, div, span, h1, h2, h3, h4, h5, h6, p, em, img, strong, sub, sup, b, u, i,  dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+#VoteOneText, #VoteTwoText, #VoteThreeText, #VoteFourText, #Panel1, #ResponsibilityCongratsNamePlaseOne, #RadioButtonListValues, #LabelFromEmployeeName, #ButtonIContributor, #ButtonIManager, #LabelFromEmployeeDep, #ButtonOK, #TextBoxComment, #ButtonModal, #ButtonNEXT, #ButtonRUS, #ButtonENG, #ButtonStats, html, body, div, span, h1, h2, h3, h4, h5, h6, p, em, img, strong, sub, sup, b, u, i,  dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -95,7 +95,7 @@ img{
     content: "";
     display: table;
 }
-/* --------------- /базовые настройки ---------*/
+/* --------------- ------------------- ---------*/
 
 /*-------------------Medals--------------------*/
 .GoldenMedal, .SilverMedal, .BronzeMedal {
@@ -124,7 +124,9 @@ img{
     padding-left:30px;
     font-size:20px;
 }
+/*-----------------------------------------------*/
 
+/*-----------------кнопки Vote-------------------*/
 #ButtonOK {
     width: 109px;
     height: 30px;
@@ -133,31 +135,23 @@ img{
     background: #e60024;
     color: #f6f3f3;
     position: absolute; 
-    bottom: 5px; /* Положение от нижнего края */
+    bottom: 5px;
     right: 10px;
     z-index: 12;
 }
 #ButtonModal {
-    bottom: 10px; /* Положение от нижнего края */
+    bottom: 10px;
     right: 16px;
     width: 119px;
     height: 30px;
     color: white;
     font-size: 14px;
-    background:#a2a0a0;
-    /*background: #dad6d6;*/
+    background:#a2a0a0;    
     cursor: pointer;
 }
-#ButtonNEXT {
-    bottom: 10px; /* Положение от нижнего края */
-    right: 16px;
-    width: 119px;
-    height: 30px;
-    background: white;    
-    cursor: pointer;
-    font-size: 14px;
-    border: 2px solid #c3c0c0; 
-}
+/*--------------------------------------------------*/
+
+/*---стили welcome (show checking, кнопка "Далее")--*/
 .CheckPointValue {
     position: absolute;
     bottom: 10px; /* Положение от нижнего края */
@@ -169,7 +163,8 @@ img{
     text-align: center;
     font-size: 24px;
     cursor: pointer;
-    border: 2px solid #c3c0c0;        
+    border: 2px solid #c3c0c0;   
+    visibility: hidden;     
 }
 .CheckPointText {
     position: absolute;
@@ -179,124 +174,29 @@ img{
     bottom: 10px;
     font-size: 16px;
     color: #b8b6b6;
+    visibility: hidden;
 }
 .CheckPoint:hover .CheckPointValue {
     color: #e60024;
+    visibility: hidden;
 }
 .CheckPoint:hover .CheckPointText {
     color: black;
+    visibility: hidden;
+}
+#ButtonNEXT {
+    bottom: 10px;
+    right: 16px;
+    width: 119px;
+    height: 30px;
+    background: white;    
+    cursor: pointer;
+    font-size: 14px;
+    border: 2px solid #c3c0c0; 
 }
 #ButtonNEXT:hover {
     background: #e60024;
 	color: #fff;
-}
-.ButtonOpenModal, .ButtonOpenVote {
-    position: absolute; 
-    bottom: 10px; /* Положение от нижнего края */
-    right: 16px;
-    width: 119px;
-    height: 30px;
- }
-#TextBoxComment{
-    font: 13px arial;
-    padding: 5px;
-    border: 1px solid #b0b3b5;
-    background: white;             
-}
-#ValueDescription {
-    height: 54px;
-}
-#ImageToEmployee, #ImageFromEmployee{
-    border: 5px solid #fff;
-}
-#RadioButtonListValues{
-    text-align: left;
-    margin-left: -10000px;
-}
-#LabelLastChose, #LabelToEmployeeName{
-    color: #e60024;
-}
-#LabelToEmployeeDep, #LabelLastChose, #LabelFromEmployeeDep {
-    font: 15px arial;
-}
-#LabelFromEmployeeName, #LabelToEmployeeName{
-    font: 18px arial;
-}
-#LabelVoteDescription{
-    top: -30px;
-    left: 950px;
-    width: 105px;
-    height: 20px;
-    padding: 5px;
-    background: #fc0;
-    position:relative;
-    float:left;
-}
-#LabelVoteDescription:before{
-    content: "";
-    top: 9px;
-    right: 100%;
-    position:absolute;
-    border-top: 6px solid transparent;
-    border-right: 10px solid #fc0;
-    border-bottom: 6px solid transparent;
-    width: 0px;
-    height: 0px;
-}
-#LabelVoteDescription.new:before{
-    display: none;
-}
-#TextBoxLimitVotes, #TextBoxSummVotes, #TextBoxSummTeamsVotes, #TextBoxTeamsVoteLimit, #TextBoxSummInnovVotes, #TextBoxInnovVoteLimit, #TextBoxSummComitVotes, #TextBoxComitVoteLimit, #TextBoxSummResponseVotes, #TextBoxResponseVoteLimit{
-    visibility: hidden;
-}
-#BlockScreen, #ModalWindow {
-    display: none;
-} 
-#BlockScreen { /*модальное окно*/
-    position: fixed;
-    background: #808080;
-    opacity: 0.75;
-    filter: alpha(opacity=75);
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 11;    
-}
-#ModalWindow {
-    position: fixed;
-    background:white;
-    border: 2px solid white;
-    box-shadow: 0px 5px 5px -3px #323232;
-    z-index: 12;
-    top: 40%;
-    left: 27%;
-    height: 100px;
-    width: 45%;    
-}
-#ButtonRUS{
-    position: absolute;
-    right: 52px;
-    bottom: 50px;
-    width: 45px;
-    height: 25px;
-    color: white;
-    background: #e60024;
-    cursor: pointer;
-    border: 2px solid #b8b6b6;
-    z-index: 10;
-}
-#ButtonENG{
-    position: absolute;
-    right: 0px;
-    bottom: 50px;
-    width: 45px;
-    height: 25px;
-    color: #444242;
-    cursor: pointer;
-    border: 2px solid #c3c0c0;    
-    left: 65px;
-    z-index: 10;
 }
 #ButtonIContributor, .IContributor {
     position: absolute;
@@ -308,7 +208,6 @@ img{
     font-size: 15px;
     cursor: pointer;
     border: 2px solid #c3c0c0;
-      /*c3c0c0*/
 }
 
 .IContributorText, .IManagerText {
@@ -354,7 +253,118 @@ img{
 #ButtonIContributor, #ButtonIManager {
     border-top: 0px;    
 }
+/*-------------------------------------------------------------*/
 
+/*------------------стили Vote---------------------------------*/
+.ButtonOpenModal, .ButtonOpenVote {
+    position: absolute; 
+    bottom: 10px;
+    right: 16px;
+    width: 119px;
+    height: 30px;
+ }
+#TextBoxComment{
+    font: 13px arial;
+    padding: 5px;
+    border: 1px solid #b0b3b5;
+    background: white;             
+}
+#ValueDescription {
+    height: 54px;
+}
+#ImageToEmployee, #ImageFromEmployee{
+    border: 5px solid #fff;
+}
+#RadioButtonListValues{
+    text-align: left;
+    margin-left: -10000px;
+}
+#LabelLastChose, #LabelToEmployeeName{
+    color: #e60024;
+}
+#LabelToEmployeeDep, #LabelLastChose, #LabelFromEmployeeDep {
+    font: 15px arial;
+}
+#LabelFromEmployeeName, #LabelToEmployeeName{
+    font: 18px arial;
+}
+#LabelVoteDescription{
+    top: -30px;
+    left: 950px;
+    width: 135px;
+    height: 20px;
+    padding: 5px;
+    background: #fc0;
+    position:relative;
+    float:left;
+}
+#LabelVoteDescription:before{
+    content: "";
+    top: 9px;
+    right: 100%;
+    position:absolute;
+    border-top: 6px solid transparent;
+    border-right: 10px solid #fc0;
+    border-bottom: 6px solid transparent;
+    width: 0px;
+    height: 0px;
+}
+#LabelVoteDescription.new:before{
+    display: none;
+}
+#TextBoxLimitVotes, #TextBoxSummVotes, #TextBoxSummTeamsVotes, #TextBoxTeamsVoteLimit, #TextBoxSummInnovVotes, #TextBoxInnovVoteLimit, #TextBoxSummComitVotes, #TextBoxComitVoteLimit, #TextBoxSummResponseVotes, #TextBoxResponseVoteLimit{
+    visibility: hidden;
+}
+#BlockScreen, #ModalWindow {
+    display: none;
+} 
+#BlockScreen { 
+    position: fixed;
+    background: #808080;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 11;    
+}
+#ModalWindow { /*модальное окно*/
+    position: fixed;
+    background:white;
+    border: 2px solid white;
+    box-shadow: 0px 5px 5px -3px #323232;
+    z-index: 12;
+    top: 40%;
+    left: 27%;
+    height: 100px;
+    width: 45%;    
+}
+#ButtonRUS{
+    position: absolute;
+    right: 52px;
+    bottom: 50px;
+    width: 45px;
+    height: 25px;
+    color: white;
+    background: #e60024;
+    cursor: pointer;
+    border: 2px solid #b8b6b6;
+    z-index: 10;
+}
+#ButtonENG{
+    position: absolute;
+    right: 0px;
+    bottom: 50px;
+    width: 45px;
+    height: 25px;
+    color: #444242;
+    cursor: pointer;
+    border: 2px solid #c3c0c0;    
+    left: 65px;
+    z-index: 10;
+}
+/*///////*/
 #ButtonStats{
     position: absolute;
     right: 104px;
@@ -393,8 +403,7 @@ h1, .SGValues {
     font-size: 20px;
 }
 
-section{
-    /*color: #444242;*/
+section{    
     max-width: 1100px;
     margin:auto;
 }
@@ -404,23 +413,20 @@ header{
     box-shadow: 0 0 8px;
 }
 body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteFour, .LastChose {
-    /*background:#f7f7f7;*/
     background: white;
 }
 .headPage {
     position: relative; /* Относительное позиционирование */
-    /* Цвет фона #e60024, #f6f3f3 */
-    height: 150px; /* Высота блока */
+    height: 150px;
     max-width: 1300px;
     margin: auto;
 }
 .ImgFromEmployee {
     position: absolute; 
-    bottom: -30px; /* Положение от нижнего края */
+    bottom: -30px;
     right: 100px;
     line-height: 1px;
-    box-shadow: 0px 5px 5px -3px;
-    /*#323232*/
+    box-shadow: 0px 5px 5px -3px;   
 }
 .ImgLogo {
     position: absolute;
@@ -443,24 +449,29 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
     height: 20px;
     z-index: 10;
 }
-.BookMarkVote {
-    position: absolute;
-    width: 218px;
-    height: 48px;
-    top: -50px;    
-    border-radius: 0 10px 0 0;
-    border-top: 2px solid #b0b3b5;
-    border-right: 2px solid #b0b3b5;
-    z-index: 1;
-}
 .FolderToVote {
-    position: relative;   
+    position: relative;
+    padding: 0px;   
     height: 200px;
     margin: 90px auto;
     box-shadow: #a2a0a0 0px 5px 5px -3px;
     border-right: 2px solid #b0b3b5;
     z-index: 2;
 }
+.BookMarkVote {
+    position: absolute;
+    width: 218px;
+    height: 50px;
+    top: -51px;    
+    border-radius: 0 10px 0 0;
+    border-top: 2px solid #b0b3b5;
+    border-right: 2px solid #b0b3b5;
+    z-index: 1;
+}
+
+/*--------------------------------------------------------------------------*/
+
+/*---------------------совмещенные стили Vote & Welcome---------------------*/
 .FolderToVote, .BookMarkVote, .WelcomeFooterContentArea {
     background:#f7f7f7;
 }
@@ -469,8 +480,7 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
     position: relative;
     padding-top: 10px;
     height: 380px;
-    margin: 20px auto;
-    /*box-shadow: #b0b3b5 0px 4px 4px -3px;*/
+    margin: 20px auto;    
     border-right: 1px solid #a2a0a0;
     border-left: 1px solid #b8b6b6;    
     border-bottom: 1px solid #a2a0a0;
@@ -507,52 +517,9 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
 #Vote {
     margin-left: 55px;
 }
+/*-------------------------------------------------------------*/
 
-.ColumnsVoteState {
-    position: relative;
-    margin: auto;
-    z-index: 2;
-}
-#InnovationState, #CommitmentState, #ResponsibilityState, #TeamSpiritState {
-    box-shadow: 0px 5px 5px -3px #323232;
-    border-right: 2px solid #b0b3b5;
-    width: 267.5px;
-}
-
-#TeamSpiritState {
-    position: absolute;
-    top: 20px;
-    left: 7.5px;
-    z-index: 3;
-    background-color:#eaeaea;
-    height:400px;    
-}
-
-#InnovationState {
-    position: absolute;
-    top: 20px;
-    left: 282.5px;
-    z-index: 3;
-    background-color:#eaeaea;
-    height:400px;    
-}
-#CommitmentState {
-    position: absolute;
-    top: 20px;
-    left: 557.5px;
-    z-index: 3;
-    background-color:#eaeaea;
-    height:400px;
-}
-#ResponsibilityState {
-    position: absolute;
-    top: 20px;
-    left: 832.5px;
-    z-index: 3;
-    background-color:#eaeaea;
-    height:400px;
-}
-
+/*------------------стили Vote---------------------------------*/
 .ImgToEmployee {
     position: absolute;
     top: -37px;
@@ -563,15 +530,14 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
 }
 .BoxComment {
     position: absolute;
-    top: 20px; /* Положение от нижнего края */
+    top: 20px;
     right: 20px;
-    left: 483px;
-    /*left: 418px;*/
+    left: 483px;    
     line-height: 1px;
 }
 .RadioButtons{
     position: absolute; 
-    top: 150px; /* Положение от нижнего края */
+    top: 150px;
     right: 150px;
 }
 .NamToEmployee{
@@ -588,31 +554,31 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
     border: 1px solid #b0b3b5;
     background: white;
 }
-#dVoteOne, #dVoteTwo, #dVoteThree, #dVoteFour{
+#dVoteOne, #dVoteTwo, #dVoteThree, #dVoteFour { /*------кнопки Качеств--------*/
     position: absolute;
     display: block;
+    padding: 0px;
     cursor: pointer;
     background: #e60024;
 	color: white;
     border: 2px solid #b0b3b5;
     border-radius:0 10px 0 0;
-    top: -38px;
+    top: -32px;
     left: 218px;            
     width: 200px;
-    height: 35px;   
+    height: 30px;   
     z-index: 0;    
 }
 
-#VoteOneText, #VoteTwoText, #VoteThreeText, #VoteFourText {
-    padding-top: 10px;
+#VoteOneText, #VoteTwoText, #VoteThreeText, #VoteFourText { /*--------текст кнопок Качеств-----------*/
+    margin: 4px auto;    
+    padding: 2px;
+    border:0px;
     text-align: center;
-    font-size: 15px;
-    /*font-family: Arial;
-    font-weight: lighter;*/
-           
+    font-size: 15px;         
 }
 
-#dVoteOne {
+#dVoteOne { /*--анимация кнопок--*/
     animation-name: blinckButtons;
     animation-delay: 0.5s;
     animation-duration: 0.2s;
@@ -664,4 +630,50 @@ body, .NamToEmployee, .DepToEmployee, #dVoteOne, #dVoteTwo, #dVoteThree, #dVoteF
 }
 #dVoteFour{
     left: 830px;
-}    
+}
+/*-------------------------------------------------------------*/
+
+/*-------------------------stats-------------------------------*/
+.ColumnsVoteState {
+    position: relative;
+    margin: auto;
+    z-index: 2;
+}
+#InnovationState, #CommitmentState, #ResponsibilityState, #TeamSpiritState {
+    box-shadow: 0px 5px 5px -3px #323232;
+    border-right: 2px solid #b0b3b5;
+    width: 267.5px;
+}
+#TeamSpiritState {
+    position: absolute;
+    top: 20px;
+    left: 7.5px;
+    z-index: 3;
+    background-color:#eaeaea;
+    height:400px;    
+}
+#InnovationState {
+    position: absolute;
+    top: 20px;
+    left: 282.5px;
+    z-index: 3;
+    background-color:#eaeaea;
+    height:400px;    
+}
+#CommitmentState {
+    position: absolute;
+    top: 20px;
+    left: 557.5px;
+    z-index: 3;
+    background-color:#eaeaea;
+    height:400px;
+}
+#ResponsibilityState {
+    position: absolute;
+    top: 20px;
+    left: 832.5px;
+    z-index: 3;
+    background-color:#eaeaea;
+    height:400px;
+}
+/*-----------------------------------------------------------*/   

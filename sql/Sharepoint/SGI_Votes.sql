@@ -1,0 +1,12 @@
+CREATE TABLE [dbo].[SGI_Votes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[AccountFrom] [varchar](255) NOT NULL,
+	[AccountTo] [varchar](255) NOT NULL,
+	[Value] [varchar](255) NOT NULL,
+	[Comment] [nvarchar](4000) NOT NULL,
+ CONSTRAINT [PK_SGI_Votes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = ON, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]

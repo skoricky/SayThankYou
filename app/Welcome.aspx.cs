@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Script.Services;
 using System.Configuration;
 using VoteWeb;
 
@@ -46,6 +47,17 @@ public partial class Welcome : System.Web.UI.Page
         }
     }
 
+    protected void IContributorPanel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("https://leadershipmodel-autopositionnement.safe.socgen/#contributor");
+    }    
+
+    protected void IManagerPanel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("https://leadershipmodel-autopositionnement.safe.socgen/#manager");
+    }
+
+
     protected void ButtonNEXT_Click(object sender, EventArgs e)
     {
         voteDataStrategy.SaveOptions(currentUser);
@@ -56,7 +68,7 @@ public partial class Welcome : System.Web.UI.Page
     private Employee GetCurrentUser()
     {
         Employee employee = new Employee();
-        employee.Account = "BA000";
+        employee.Account = ProgramClasses.GetCurrentAccount();
         employee.WelcomeNoShowCheck = voteDataStrategy.GetWelcomeNoShowCheck(employee.Account);
         employee.SelectedLanguage = voteDataStrategy.GetSelectedLanguage(employee.Account);
         return employee;

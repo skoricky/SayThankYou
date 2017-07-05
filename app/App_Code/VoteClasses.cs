@@ -7,8 +7,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using System.Xml.Linq;
 using System.Configuration;
-using NLog;
 
 
 namespace VoteWeb
@@ -17,6 +17,11 @@ namespace VoteWeb
     /// Corporate values
     /// </summary>
     public enum Value { Unknown = -1, TeamSpirit = 0, Innovation = 1, Commitment = 2, Responsibility = 3 };
+
+    /// <summary>
+    /// Vote limitation mode 
+    /// </summary>
+    public enum VoteLimitMode { Infinity, UserLimit, UserValueLimit }
 
     public struct Employee
     {
@@ -70,6 +75,20 @@ namespace VoteWeb
         private List<Employee> _employeeList = new List<Employee>();
         private List<EmployeeVote> _voteList = new List<EmployeeVote>();
 
+        //private bool GetSavedCheck(string account)
+        //{
+        //    bool check;
+        //    XmlDocument doc = new XmlDocument();
+        //    doc.Load("xml/Debug/VoteXML.xml");
+
+        //    foreach (XElement elm in doc.Descendants("friend"))
+        //    {
+
+        //    }
+
+        //    return check;
+        //}
+
         private void FillDebugData()
         {
             Employee employee = new Employee();
@@ -97,16 +116,16 @@ namespace VoteWeb
             employee.EmployeeName = "Dead Pool";
             employee.ImageUrl = "~/img/Debug/DeadPool.jpg";
             employee.WelcomeNoShowCheck = false;
-            employee.SelectedLanguage = "ENG";
+            employee.SelectedLanguage = "RUS";
             employee.currentVotes = new Dictionary<string, int>();
-            employee.currentVotes.Add("TeamSpirit", 5);
-            employee.currentVotes.Add("Innovation", 5);
-            employee.currentVotes.Add("Commitment", 5);
-            employee.currentVotes.Add("Responsibility", 1);
+            employee.currentVotes.Add("TeamSpirit", 3);
+            employee.currentVotes.Add("Innovation", 8);
+            employee.currentVotes.Add("Commitment", 10);
+            employee.currentVotes.Add("Responsibility", 5);
             employee.maxVotes = new Dictionary<string, int>();
             employee.maxVotes.Add("TeamSpirit", 10);
             employee.maxVotes.Add("Innovation", 10);
-            employee.maxVotes.Add("Commitment", -1);
+            employee.maxVotes.Add("Commitment", 10);
             employee.maxVotes.Add("Responsibility", 10);
             _employeeList.Add(employee);
         }
@@ -404,17 +423,36 @@ namespace VoteWeb
     /// </summary>
     public class ProgramClasses
     {
-        public const string ORG_CHART_LINK = @"http://rswdapp00/dep/staff/Org%20Chart%20IT/Home.aspx";
+        public const string ORG_CHART_LINK = @"http://rswdapp00/dep/staff/OrgChart/Home.aspx";
         public const bool TEST_MODE = true;
 
-        
 
+        /// <summary>
+        /// Returns current account (baXXXXXX)
+        /// </summary>
+        /// <returns>Current account</returns>
+        public static string GetCurrentAccount()
+        {
+            const int LOGIN_LEN = 8;
+
+            string login = "";
+            int fullLoginLen = 0;
+            if (HttpContext.Current != null)
+            {
+                login = HttpContext.Current.User.Identity.Name;
+                fullLoginLen = HttpContext.Current.User.Identity.Name.Length;
+                if (fullLoginLen > LOGIN_LEN)
+                {
+                    login = login.Remove(0, fullLoginLen - LOGIN_LEN);
+                }
+            }
+
+            return login;
+        }
 
         public class EmployeeVoteData
         {
-            Logger logger = LogManager.GetCurrentClassLogger();
-
-            /// <summary>
+                        /// <summary>
             /// Returns open connection to database
             /// </summary>
             /// <returns>Open connection to database</returns>
@@ -422,16 +460,8 @@ namespace VoteWeb
             {
                 string connString = ConfigurationManager.ConnectionStrings["ConStringName"].ToString();
                 SqlConnection connect = new SqlConnection(connString);
-                try
-                {
-                    logger.Info("Открываем соединение с БД");
-                    connect.Open();
-                }
-                catch
-                {
-                    logger.Error("Cоединение с БД закончилось с ошибкой");
-                    throw;
-                }
+                connect.Open();
+    
                 return connect;
             }
 
@@ -473,19 +503,11 @@ namespace VoteWeb
                 try
                 {
                     int voteCount = 0;
-                    try
+                    using (SqlCommand command = new SqlCommand("SELECT dbo.fn_SGI_GetVotesInMonth(@AccountName, @Value)", connect))
                     {
-                        logger.Info("Запрос в БД на получение количества отданных голосов");
-                        using (SqlCommand command = new SqlCommand("SELECT dbo.fn_SGI_GetVotesInMonth(@AccountName, @Value)", connect))
-                        {
-                            command.Parameters.Add("@AccountName", SqlDbType.VarChar).Value = accountName;
-                            command.Parameters.Add("@Value", SqlDbType.VarChar).Value = CorporateValue;
-                            voteCount = (Int32)command.ExecuteScalar();
-                        }
-                    }
-                    catch
-                    {
-                        logger.Error("Запрос в БД на получение получение количества отданных голосов произошел с ошибкой");
+                        command.Parameters.Add("@AccountName", SqlDbType.VarChar).Value = accountName;
+                        command.Parameters.Add("@Value", SqlDbType.VarChar).Value = CorporateValue;
+                        voteCount = (Int32)command.ExecuteScalar();
                     }
                     return voteCount;
                 }
@@ -507,19 +529,13 @@ namespace VoteWeb
                 try
                 {
                     int voteCount = 0;
-                    try
+                                            
+                    using (SqlCommand command = new SqlCommand("SELECT dbo.fn_SGI_GetMaxVotes(@AccountName)", connect))
                     {
-                        logger.Info("Запрос в БД на получение максимального количества возможных голосов");
-                        using (SqlCommand command = new SqlCommand("SELECT dbo.fn_SGI_GetMaxVotes(@AccountName)", connect))
-                        {
-                            command.Parameters.Add("@AccountName", SqlDbType.VarChar).Value = accountName;
-                            voteCount = (Int32)command.ExecuteScalar();
-                        }
+                        command.Parameters.Add("@AccountName", SqlDbType.VarChar).Value = accountName;
+                        voteCount = (Int32)command.ExecuteScalar();
                     }
-                    catch
-                    {
-                        logger.Error("Запрос в БД на получение максимального количества возможных голосов произошел с ошибкой");
-                    }
+                    
                     return voteCount;
                 }
                 finally
@@ -538,45 +554,39 @@ namespace VoteWeb
                 List<StatValue> UsersList = new List<StatValue>();
                 SqlConnection connect = GetConnection();
                 try
-                {
-                    try
+                {                  
+                    //    using (SqlCommand command = new SqlCommand("SELECT user, sumValue FROM dbo.view_stat WHERE value = @Value", connect))
+                    string sql = @"  SELECT SGI_Votes.Value AS value, t.value AS [user], COUNT(*) AS sumValue
+                        FROM SGI_Votes LEFT JOIN 
+  	                    (	SELECT pref.value('(text())[1]', 'nvarchar(255)') AS Account,
+			                    pref2.value('(text())[1]', 'nvarchar(255)') AS Value
+		                    FROM
+			                    [dbo].[UserData] 
+				                    CROSS APPLY
+			                    tp_ColumnSet.nodes('/nvarchar21') AS Account(pref)
+				                    CROSS APPLY
+			                    tp_ColumnSet.nodes('/nvarchar1') AS Value(pref2)
+		                    WHERE tp_ListId = 'F239CEB0-A683-411B-9378-D2EF15A85D54'
+	                    ) t ON SGI_Votes.AccountTo = t.Account
+                        WHERE SGI_Votes.Value = @Value
+                        GROUP BY SGI_Votes.Value, t.value
+                        ORDER BY SGI_Votes.Value, COUNT(*) DESC
+                    ";
+
+                    using (SqlCommand command = new SqlCommand(sql, connect))
                     {
-                        logger.Info("GetUsersListByValue.GetUp");
-                        //    using (SqlCommand command = new SqlCommand("SELECT user, sumValue FROM dbo.view_stat WHERE value = @Value", connect))
-                        string sql = @"  SELECT SGI_Votes.Value AS value, t.value AS [user], COUNT(*) AS sumValue
-                          FROM SGI_Votes LEFT JOIN 
-  	                        (	SELECT pref.value('(text())[1]', 'nvarchar(255)') AS Account,
-			                        pref2.value('(text())[1]', 'nvarchar(255)') AS Value
-		                        FROM
-			                        [dbo].[UserData] 
-				                        CROSS APPLY
-			                        tp_ColumnSet.nodes('/nvarchar21') AS Account(pref)
-				                        CROSS APPLY
-			                        tp_ColumnSet.nodes('/nvarchar1') AS Value(pref2)
-		                        WHERE tp_ListId = 'F239CEB0-A683-411B-9378-D2EF15A85D54'
-	                        ) t ON SGI_Votes.AcountTo = t.Account
-                          WHERE SGI_Votes.Value = @Value
-                          GROUP BY SGI_Votes.Value, t.value
-                          ORDER BY SGI_Votes.Value, COUNT(*) DESC
-                        ";
+                        command.Parameters.Add("@Value", SqlDbType.VarChar).Value = Value;
+                        SqlDataReader reader = command.ExecuteReader();
 
-                        using (SqlCommand command = new SqlCommand(sql, connect))
+                        while (reader.Read() && UsersList.Count <= 10)
                         {
-                            command.Parameters.Add("@Value", SqlDbType.VarChar).Value = Value;
-                            SqlDataReader reader = command.ExecuteReader();
-
-                            while (reader.Read() && UsersList.Count <= 10)
-                            {
-                                string valueName = reader["user"].ToString();
-                                int sumValue = (int)reader["sumValue"];
-                                UsersList.Add(new StatValue() { EmployeeName = valueName, ValueCount = sumValue });
-                            }
+                            string valueName = reader["user"].ToString();
+                            int sumValue = (int)reader["sumValue"];
+                            UsersList.Add(new StatValue() { EmployeeName = valueName, ValueCount = sumValue });
                         }
                     }
-                    catch
-                    {
-                        logger.Error("GetUsersListByValue.NoGood");
-                    }
+               
+           
                     return UsersList;
                 }
                 finally
@@ -602,15 +612,9 @@ namespace VoteWeb
 
                     SqlCommand command = new SqlCommand(sql, connect);
                     string value = "";
-                    try
-                    {
-                        logger.Info("Запрос в БД на получение информации о пользователе (code " + code.ToString() + "; account " + account + ")");
-                        value = command.ExecuteScalar().ToString();
-                    }
-                    catch
-                    {
-                        logger.Error("Запрос в БД на получение информации о пользователе произошел с ошибкой");
-                    }
+                    
+                    value = command.ExecuteScalar().ToString();
+                    
                     return value;
                 }
 
@@ -620,37 +624,7 @@ namespace VoteWeb
                 }
             }
 
-            /// <summary>
-            /// Returns current account (baXXXXXX)
-            /// </summary>
-            /// <returns>Current account</returns>
-            public string GetCurrentAccount()
-            {
-                const int LOGIN_LEN = 8;
-                try
-                {
-                    logger.Info("Запрашиваем в БД информацию о текущем профиле");
-
-                    string login = "";
-                    int fullLoginLen = 0;
-                    if (HttpContext.Current != null)
-                    {
-                        login = HttpContext.Current.User.Identity.Name;
-                        fullLoginLen = HttpContext.Current.User.Identity.Name.Length;
-                        if (fullLoginLen > LOGIN_LEN)
-                        {
-                            login = login.Remove(0, fullLoginLen - LOGIN_LEN);
-                        }
-                    }
-
-                    return login;
-                }
-                catch
-                {
-                    logger.Error("Запрос в БД на получение информации о текущем профиле произошел с ошибкой");
-                    return "";
-                }
-            }
+          
 
         }        
     }

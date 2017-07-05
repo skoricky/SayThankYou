@@ -23,26 +23,31 @@ function SumCharsVotes() {
     
     if (TeamsVoteLimit.value > -1 && InnovVoteLimit.value > -1 && ComitVoteLimit.value > -1 && ResponseVoteLimit.value > -1) {
         TeamsVoteDifferens = Number(TeamsVoteLimit.value) - Number(SummTeamsVotes.value);
-        TeamsVoteContent = document.getElementById('VoteOneText').innerHTML + " (" + TeamsVoteDifferens + ")";
+        //TeamsVoteContent = document.getElementById('VoteOneText').innerHTML + " (" + TeamsVoteDifferens + ")";
+        TeamsVoteContent = document.getElementById('VoteOneText').innerHTML;
         document.getElementById('VoteOneText').innerHTML = TeamsVoteContent;
 
         InnovVoteDifferens = Number(InnovVoteLimit.value) - Number(SummInnovVotes.value);
-        InnovVoteContent = document.getElementById('VoteTwoText').innerHTML + " (" + InnovVoteDifferens + ")";
+        //InnovVoteContent = document.getElementById('VoteTwoText').innerHTML + " (" + InnovVoteDifferens + ")";
+        InnovVoteContent = document.getElementById('VoteTwoText').innerHTML;
         document.getElementById('VoteTwoText').innerHTML = InnovVoteContent;
 
         ComitVoteDifferens = Number(ComitVoteLimit.value) - Number(SummComitVotes.value);
-        ComitVoteContent = document.getElementById('VoteThreeText').innerHTML + " (" + ComitVoteDifferens + ")";
+        //ComitVoteContent = document.getElementById('VoteThreeText').innerHTML + " (" + ComitVoteDifferens + ")";
+        ComitVoteContent = document.getElementById('VoteThreeText').innerHTML;
         document.getElementById('VoteThreeText').innerHTML = ComitVoteContent;
 
         ResponseVoteDifferens = Number(ResponseVoteLimit.value) - Number(SummResponseVotes.value);
-        ResponseVoteContent = document.getElementById('VoteFourText').innerHTML + " (" + ResponseVoteDifferens + ")";
+        //ResponseVoteContent = document.getElementById('VoteFourText').innerHTML + " (" + ResponseVoteDifferens + ")";
+        ResponseVoteContent = document.getElementById('VoteFourText').innerHTML;
         document.getElementById('VoteFourText').innerHTML = ResponseVoteContent;
 
-        summVotes = 0;
+     /*   summVotes = 0;
         summVotes += Number(TeamsVoteDifferens);
         summVotes += Number(InnovVoteDifferens);
         summVotes += Number(ComitVoteDifferens);
-        summVotes += Number(ResponseVoteDifferens);
+        summVotes += Number(ResponseVoteDifferens);*/
+        summVotes = Number(TeamsVoteLimit.value) - Number(SummTeamsVotes.value) - Number(SummInnovVotes.value) - Number(SummComitVotes.value) - Number(SummResponseVotes.value);
     } else {
         summVotes = -1;
     }
@@ -73,9 +78,10 @@ window.onload = function ()
             radioButtons[1].checked = InnovVoteDifferens > 0 && TeamsVoteDifferens <= 0;
             radioButtons[2].checked = ComitVoteDifferens > 0 && TeamsVoteDifferens <= 0 && InnovVoteDifferens <= 0;
             radioButtons[3].checked = ResponseVoteDifferens > 0 && TeamsVoteDifferens <= 0 && InnovVoteDifferens <= 0 && ComitVoteDifferens <= 0;
-        }                    
-        getVoteCheckedRadio();
+        }        
     }
+
+    getVoteCheckedRadio();
 }
 
 function OpenErrModalWin() {
@@ -161,35 +167,43 @@ function AnimationStop() {
 }
 
 function OpenModalWindow() {
-    RestoreLanguage();                              
-    var fromDep = document.getElementById('LabelFromEmployeeDep').innerText;
+    RestoreLanguage();
+    var fromDep = document.getElementById('LabelFromEmployeeDep').innerHTML;
     //var toDep = document.getElementById('LabelToEmployeeDep').innerText;
     var toDep = "";
+    var toEmployeeName = document.getElementById('LabelToEmployeeName').innerHTML;
+    var fromEmployeeName = document.getElementById('LabelFromEmployeeName').innerHTML;
 
     if (fromDep === toDep) {
         OpenErrModalWin();
         document.getElementById('Text').innerHTML = "<font color=red>Внимание! </font>Нельзя голосовать за сотрудника Вашего департамента<br /><font color=red>Attention!</font> It is not allowed to vote for colleague from your department";
-    } else {                    
+    } else {
         if (summVotes === 0) {
             OpenErrModalWin();
             document.getElementById('Text').innerHTML = "У Вас не осталось голосов в этом месяце...<font color=red>очень жаль!</font><br /><font color=red>Sorry!</font> You have no more points for voting <font color=red>in this month!</font>";
         } else {
-            var radioButtons = document.getElementsByName('RadioButtonListValues');
-            for (var i = 0; i < radioButtons.length; i++) {
-                if (radioButtons[i].checked) {
-                    showFinalWindow();
-                    break;
+            if (toEmployeeName === fromEmployeeName) {
+                OpenErrModalWin();
+                document.getElementById('Text').innerHTML = "<font color=red>Внимание! </font>Нельзя голосовать за себя<br /><font color=red>Attention!</font> It is not allowed to vote for yourself";
+            } else {
+
+                var radioButtons = document.getElementsByName('RadioButtonListValues');
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+                        showFinalWindow();
+                        break;
+                    }
                 }
             }
         }
     }
-            
 }
 
 function showFinalWindow()
 {
     RestoreLanguage();
-    document.getElementById('BlockScreen').style.display = "block";               
+    document.getElementById('BlockScreen').style.display = "block";
+    document.getElementById('ModalWindow').style.display = "block";
     if (document.getElementById('SelectedLanguage').value === "RUS") {
         document.getElementById('Text').innerHTML = "<font color=red>Спасибо</font> за Ваш голос!</font>";
     } else {
@@ -241,7 +255,7 @@ function getVoteCheckedRadio() {
     for (var i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked) {
             stoppedTyping();
-            document.getElementById('LabelVoteDescription').style.top = "-75px";
+            document.getElementById('LabelVoteDescription').style.top = "-70px";
             document.getElementById('LabelVoteDescription').style.borderRadius = "10px 10px 10px 0px";
             document.getElementById('dVoteOne').style.color = "#fff";
             document.getElementById('dVoteOne').style.background = "#a2a0a0";
@@ -260,12 +274,12 @@ function getVoteCheckedRadio() {
                     document.getElementById('dVoteOne').style.background = "#e60024";
                     if (document.getElementById('SelectedLanguage').value === "RUS") {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Командный дух";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Концентрация энергии и таланта на достижение общего успеха";
-                        document.getElementById('LabelVoteDescription').style.width = "500px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "Я направляю свою энергию и талант на достижение общего успеха";
+                        document.getElementById('LabelVoteDescription').style.width = "510px";
                     } else {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Team Spirit";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Concentration of energy and talent to achieve overall success";
-                        document.getElementById('LabelVoteDescription').style.width = "460px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "I focus my energy and talent on collective success";
+                        document.getElementById('LabelVoteDescription').style.width = "370px";
                     }
                     break;
                 case "Innovation":
@@ -275,12 +289,12 @@ function getVoteCheckedRadio() {
                     document.getElementById('dVoteTwo').style.background = "#e60024";
                     if (document.getElementById('SelectedLanguage').value === "RUS") {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Инновации";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Новые идеи и вклад в изменение процессов";
-                        document.getElementById('LabelVoteDescription').style.width = "360px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "Я предлагаю новые идеи и вношу свой вклад в процесс изменений";
+                        document.getElementById('LabelVoteDescription').style.width = "510px";
                     } else {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Innovation";
-                        document.getElementById('LabelVoteDescription').innerHTML = "New ideas and contribution to the change process";
-                        document.getElementById('LabelVoteDescription').style.width = "380px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "I act ethically and with courage";
+                        document.getElementById('LabelVoteDescription').style.width = "230px";
                     }
                     break;
                 case "Commitment":
@@ -290,12 +304,12 @@ function getVoteCheckedRadio() {
                     document.getElementById('dVoteThree').style.background = "#e60024";
                     if (document.getElementById('SelectedLanguage').value === "RUS") {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Вовлеченность";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Вовлечение и проявление внимания к другим людям";
-                        document.getElementById('LabelVoteDescription').style.width = "420px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "Я увлечен общим делом и внимателен к другим";
+                        document.getElementById('LabelVoteDescription').style.width = "370px";
                     } else {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Commitment";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Involvement and demonstration of attention to other people";
-                        document.getElementById('LabelVoteDescription').style.width = "440px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "I propose new ideas and contribute to the change process";
+                        document.getElementById('LabelVoteDescription').style.width = "420px";
                              
                     }
                     break;
@@ -306,12 +320,12 @@ function getVoteCheckedRadio() {
                     document.getElementById('dVoteFour').style.background = "#e60024";
                     if (document.getElementById('SelectedLanguage').value === "RUS") {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Ответственность";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Решительные действия и соблюдения этики";
-                        document.getElementById('LabelVoteDescription').style.width = "350px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "Я действую решительно, соблюдая этику";
+                        document.getElementById('LabelVoteDescription').style.width = "320px";
                     } else {
                         document.getElementById('LabelLastChose').innerText = "+ 1 Responsibility";
-                        document.getElementById('LabelVoteDescription').innerHTML = "Responsible actions and complying with Ethics";
-                        document.getElementById('LabelVoteDescription').style.width = "350px";
+                        document.getElementById('LabelVoteDescription').innerHTML = "I am engaged and demonstrate consideration for others";
+                        document.getElementById('LabelVoteDescription').style.width = "400px";
                     }
                     break;
                 default:
